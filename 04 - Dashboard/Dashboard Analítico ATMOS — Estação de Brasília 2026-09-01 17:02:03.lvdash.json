@@ -1,0 +1,1175 @@
+{
+  "datasets": [
+    {
+      "name": "atmos_clima_mensal",
+      "displayName": "ATMOS Clima Mensal",
+      "config": {
+        "source": "atmos.gold.perfil_sazonal_mensal",
+        "measures": [
+          {
+            "name": "temperatura_media_c",
+            "expr": "ROUND(AVG(COALESCE(temperatura_media_c, 0)), 2)",
+            "displayName": "Temperatura Média (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "temperatura_maxima_media_c",
+            "expr": "ROUND(AVG(COALESCE(temperatura_maxima_media_c, 0)), 2)",
+            "displayName": "Temperatura Máxima Média (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "temperatura_minima_media_c",
+            "expr": "ROUND(AVG(COALESCE(temperatura_minima_media_c, 0)), 2)",
+            "displayName": "Temperatura Mínima Média (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "temperatura_maxima_abs_c",
+            "expr": "ROUND(MAX(COALESCE(temperatura_maxima_abs_c, 0)), 2)",
+            "displayName": "Temperatura Máxima Absoluta (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "temperatura_minima_abs_c",
+            "expr": "ROUND(MIN(COALESCE(temperatura_minima_abs_c, 0)), 2)",
+            "displayName": "Temperatura Mínima Absoluta (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "precipitacao_total_mm",
+            "expr": "ROUND(SUM(COALESCE(precipitacao_total_mm, 0)), 2)",
+            "displayName": "Precipitação Total (mm)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "umidade_media_pct",
+            "expr": "ROUND(AVG(COALESCE(umidade_media_pct, 0)), 2)",
+            "displayName": "Umidade Média (%)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "amplitude_termica_media_c",
+            "expr": "ROUND(AVG(COALESCE(amplitude_termica_media_c, 0)), 2)",
+            "displayName": "Amplitude Térmica Média (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "temperatura_media_2026_c",
+            "expr": "ROUND(AVG(CASE WHEN ano = 2026 THEN COALESCE(temperatura_media_c, 0) END), 2)",
+            "displayName": "Temperatura Média 2026 (°C)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "precipitacao_total_2026_mm",
+            "expr": "ROUND(SUM(CASE WHEN ano = 2026 THEN COALESCE(precipitacao_total_mm, 0) END), 2)",
+            "displayName": "Precipitação 2026 (mm)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ],
+        "filter": "cidade IN ('Brasília', 'Brasilia', 'BRASILIA')",
+        "version": "1.1",
+        "comment": "Métricas climáticas mensais derivadas da camada gold do projeto ATMOS para a estação de Brasília",
+        "dimensions": [
+          {
+            "name": "id_estacao",
+            "expr": "id_estacao",
+            "displayName": "ID Estação"
+          },
+          {
+            "name": "cidade",
+            "expr": "cidade",
+            "displayName": "Cidade"
+          },
+          {
+            "name": "ano",
+            "expr": "ano",
+            "displayName": "Ano"
+          },
+          {
+            "name": "mes",
+            "expr": "mes",
+            "displayName": "Mês"
+          },
+          {
+            "name": "mes_nome",
+            "expr": "CASE mes\n  WHEN 1 THEN '01 Jan'\n  WHEN 2 THEN '02 Fev'\n  WHEN 3 THEN '03 Mar'\n  WHEN 4 THEN '04 Abr'\n  WHEN 5 THEN '05 Mai'\n  WHEN 6 THEN '06 Jun'\n  WHEN 7 THEN '07 Jul'\n  WHEN 8 THEN '08 Ago'\n  WHEN 9 THEN '09 Set'\n  WHEN 10 THEN '10 Out'\n  WHEN 11 THEN '11 Nov'\n  WHEN 12 THEN '12 Dez'\nEND",
+            "displayName": "Mês"
+          },
+          {
+            "name": "periodo_mensal",
+            "expr": "MAKE_DATE(ano, mes, 1)",
+            "displayName": "Período Mensal",
+            "format": {
+              "type": "date",
+              "dateFormat": "locale_short_month"
+            }
+          },
+          {
+            "name": "trimestre",
+            "expr": "QUARTER(MAKE_DATE(ano, mes, 1))",
+            "displayName": "Trimestre"
+          },
+          {
+            "name": "estacao_ano",
+            "expr": "CASE\n  WHEN mes IN (12, 1, 2) THEN 'Verão'\n  WHEN mes IN (3, 4, 5) THEN 'Outono'\n  WHEN mes IN (6, 7, 8) THEN 'Inverno'\n  ELSE 'Primavera'\nEND",
+            "displayName": "Estação do Ano"
+          }
+        ]
+      }
+    },
+    {
+      "name": "atmos_kpis_brasilia",
+      "displayName": "ATMOS KPIs Brasília",
+      "queryLines": [
+        "WITH base AS (\n",
+        "  SELECT\n",
+        "    MAKE_DATE(ano, mes, 1) AS data_ref,\n",
+        "    COALESCE(temperatura_media_c, 0) AS temperatura_media_c,\n",
+        "    COALESCE(temperatura_maxima_abs_c, 0) AS temperatura_maxima_abs_c,\n",
+        "    COALESCE(temperatura_minima_abs_c, 0) AS temperatura_minima_abs_c,\n",
+        "    COALESCE(precipitacao_total_mm, 0) AS precipitacao_total_mm,\n",
+        "    COALESCE(umidade_media_pct, 0) AS umidade_media_pct,\n",
+        "    ano\n",
+        "  FROM\n",
+        "    atmos.gold.perfil_sazonal_mensal\n",
+        "  WHERE\n",
+        "    cidade IN ('Brasília', 'Brasilia', 'BRASILIA')\n",
+        ")\n",
+        "SELECT\n",
+        "  ROUND(\n",
+        "    AVG(\n",
+        "      CASE\n",
+        "        WHEN ano = 2026 THEN temperatura_media_c\n",
+        "      END\n",
+        "    ),\n",
+        "    2\n",
+        "  ) AS temperatura_media_2026_c,\n",
+        "  MAX(\n",
+        "    CASE\n",
+        "      WHEN ano = 2026 THEN data_ref\n",
+        "    END\n",
+        "  ) AS data_temp_media_2026,\n",
+        "  ROUND(MAX(temperatura_maxima_abs_c), 2) AS temperatura_maxima_abs_c,\n",
+        "  MAX_BY(data_ref, temperatura_maxima_abs_c) AS data_temp_max_abs,\n",
+        "  ROUND(MIN(temperatura_minima_abs_c), 2) AS temperatura_minima_abs_c,\n",
+        "  MIN_BY(data_ref, temperatura_minima_abs_c) AS data_temp_min_abs,\n",
+        "  ROUND(\n",
+        "    SUM(\n",
+        "      CASE\n",
+        "        WHEN ano = 2026 THEN precipitacao_total_mm\n",
+        "      END\n",
+        "    ),\n",
+        "    2\n",
+        "  ) AS precipitacao_total_2026_mm,\n",
+        "  MAX(\n",
+        "    CASE\n",
+        "      WHEN ano = 2026 THEN data_ref\n",
+        "    END\n",
+        "  ) AS data_precip_2026,\n",
+        "  ROUND(AVG(umidade_media_pct), 2) AS umidade_media_pct,\n",
+        "  MAX(data_ref) AS data_umidade_media,\n",
+        "  MIN(data_ref) AS periodo_inicio,\n",
+        "  MAX(data_ref) AS periodo_fim\n",
+        "FROM\n",
+        "  base"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "a045fae9",
+      "displayName": "Visão Geral Climática",
+      "layout": [
+        {
+          "widget": {
+            "name": "atmos_header",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Dashboard Analítico ATMOS — Estação de Brasília\n",
+                "Período analisado: **2020/01/01 a 2026/08/01**. Visão executiva das temperaturas, precipitação, umidade e extremos climáticos da estação de Brasília."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_temp_media_2026",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_kpis_brasilia",
+                  "fields": [
+                    {
+                      "name": "data_temp_media_2026",
+                      "expression": "`data_temp_media_2026`"
+                    },
+                    {
+                      "name": "temperatura_media_2026_c",
+                      "expression": "`temperatura_media_2026_c`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "`data_temp_media_2026`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Temperatura Média do Período Atual (2026) — Brasília"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "temperatura_media_2026_c"
+                },
+                "period": {
+                  "fieldName": "data_temp_media_2026",
+                  "hideLabels": false
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_temp_max_abs",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_kpis_brasilia",
+                  "fields": [
+                    {
+                      "name": "data_temp_max_abs",
+                      "expression": "`data_temp_max_abs`"
+                    },
+                    {
+                      "name": "temperatura_maxima_abs_c",
+                      "expression": "`temperatura_maxima_abs_c`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "`data_temp_max_abs`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Temperatura Máxima Absoluta Registrada (°C) — Brasília"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "temperatura_maxima_abs_c"
+                },
+                "period": {
+                  "fieldName": "data_temp_max_abs",
+                  "hideLabels": false
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_temp_min_abs",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_kpis_brasilia",
+                  "fields": [
+                    {
+                      "name": "data_temp_min_abs",
+                      "expression": "`data_temp_min_abs`"
+                    },
+                    {
+                      "name": "temperatura_minima_abs_c",
+                      "expression": "`temperatura_minima_abs_c`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "`data_temp_min_abs`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Temperatura Mínima Absoluta Registrada (°C) — Brasília"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "temperatura_minima_abs_c"
+                },
+                "period": {
+                  "fieldName": "data_temp_min_abs",
+                  "hideLabels": false
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 2,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_precip_2026",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_kpis_brasilia",
+                  "fields": [
+                    {
+                      "name": "data_precip_2026",
+                      "expression": "`data_precip_2026`"
+                    },
+                    {
+                      "name": "precipitacao_total_2026_mm",
+                      "expression": "`precipitacao_total_2026_mm`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "`data_precip_2026`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Precipitação Acumulada no Ano Atual (mm) — Brasília"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "precipitacao_total_2026_mm"
+                },
+                "period": {
+                  "fieldName": "data_precip_2026",
+                  "hideLabels": false
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 5,
+            "width": 6,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_umidade_media",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_kpis_brasilia",
+                  "fields": [
+                    {
+                      "name": "data_umidade_media",
+                      "expression": "`data_umidade_media`"
+                    },
+                    {
+                      "name": "umidade_media_pct",
+                      "expression": "`umidade_media_pct`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "`data_umidade_media`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Umidade Relativa Média (%) — Brasília"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "umidade_media_pct"
+                },
+                "period": {
+                  "fieldName": "data_umidade_media",
+                  "hideLabels": false
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 5,
+            "width": 6,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "evolucao_historica_temperaturas",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_clima_mensal",
+                  "fields": [
+                    {
+                      "name": "periodo_mensal",
+                      "expression": "`periodo_mensal`"
+                    },
+                    {
+                      "name": "measure(temperatura_maxima_media_c)",
+                      "expression": "MEASURE(`temperatura_maxima_media_c`)"
+                    },
+                    {
+                      "name": "measure(temperatura_media_c)",
+                      "expression": "MEASURE(`temperatura_media_c`)"
+                    },
+                    {
+                      "name": "measure(temperatura_minima_media_c)",
+                      "expression": "MEASURE(`temperatura_minima_media_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Evolução Histórica das Temperaturas"
+              },
+              "version": 3,
+              "mark": {
+                "colors": [
+                  "#D32F2F",
+                  "#F57C00",
+                  "#1976D2"
+                ]
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "periodo_mensal",
+                  "axis": {
+                    "title": "Período Cronológico"
+                  },
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fields": [
+                    {
+                      "fieldName": "measure(temperatura_maxima_media_c)",
+                      "displayName": "Temperatura Máxima Média (°C)"
+                    },
+                    {
+                      "fieldName": "measure(temperatura_media_c)",
+                      "displayName": "Temperatura Média (°C)"
+                    },
+                    {
+                      "fieldName": "measure(temperatura_minima_media_c)",
+                      "displayName": "Temperatura Mínima Média (°C)"
+                    }
+                  ],
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "title": "Temperatura (°C)"
+                  }
+                },
+                "color": {
+                  "legend": {}
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "precipitacao_vs_umidade_mes",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_clima_mensal",
+                  "fields": [
+                    {
+                      "name": "mes_nome",
+                      "expression": "`mes_nome`"
+                    },
+                    {
+                      "name": "measure(precipitacao_total_mm)",
+                      "expression": "MEASURE(`precipitacao_total_mm`)"
+                    },
+                    {
+                      "name": "measure(umidade_media_pct)",
+                      "expression": "MEASURE(`umidade_media_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Comparativo de Precipitação vs. Umidade por Mês (2020–2026)"
+              },
+              "version": 1,
+              "mark": {
+                "colors": [
+                  "#1A5276",
+                  "#F39C12"
+                ],
+                "opacity": 0.88,
+                "marker": {
+                  "shape": "circle"
+                }
+              },
+              "widgetType": "combo",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes_nome",
+                  "axis": {
+                    "title": "Mês",
+                    "labelAngle": 0
+                  },
+                  "format": {
+                    "type": "alias",
+                    "mappings": [
+                      {
+                        "value": "01 Jan",
+                        "alias": "Jan"
+                      },
+                      {
+                        "value": "02 Fev",
+                        "alias": "Fev"
+                      },
+                      {
+                        "value": "03 Mar",
+                        "alias": "Mar"
+                      },
+                      {
+                        "value": "04 Abr",
+                        "alias": "Abr"
+                      },
+                      {
+                        "value": "05 Mai",
+                        "alias": "Mai"
+                      },
+                      {
+                        "value": "06 Jun",
+                        "alias": "Jun"
+                      },
+                      {
+                        "value": "07 Jul",
+                        "alias": "Jul"
+                      },
+                      {
+                        "value": "08 Ago",
+                        "alias": "Ago"
+                      },
+                      {
+                        "value": "09 Set",
+                        "alias": "Set"
+                      },
+                      {
+                        "value": "10 Out",
+                        "alias": "Out"
+                      },
+                      {
+                        "value": "11 Nov",
+                        "alias": "Nov"
+                      },
+                      {
+                        "value": "12 Dez",
+                        "alias": "Dez"
+                      }
+                    ]
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "primary": {
+                    "fields": [
+                      {
+                        "fieldName": "measure(precipitacao_total_mm)",
+                        "displayName": "Precipitação Total (mm)"
+                      }
+                    ],
+                    "format": {
+                      "type": "number-plain",
+                      "abbreviation": "none",
+                      "decimalPlaces": {
+                        "type": "exact",
+                        "places": 0
+                      }
+                    },
+                    "scale": {
+                      "type": "quantitative"
+                    },
+                    "axis": {
+                      "title": "Precipitação Total (mm)"
+                    }
+                  },
+                  "secondary": {
+                    "fields": [
+                      {
+                        "fieldName": "measure(umidade_media_pct)",
+                        "displayName": "Umidade Média (%)"
+                      }
+                    ],
+                    "format": {
+                      "type": "number-plain",
+                      "abbreviation": "none",
+                      "decimalPlaces": {
+                        "type": "exact",
+                        "places": 0
+                      }
+                    },
+                    "scale": {
+                      "type": "quantitative",
+                      "domain": {
+                        "min": 0,
+                        "max": 100
+                      }
+                    },
+                    "axis": {
+                      "title": "Umidade Média (%)"
+                    }
+                  }
+                },
+                "color": {
+                  "legend": {
+                    "position": "top"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 27,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "amplitude_e_extremos_climaticos",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_clima_mensal",
+                  "fields": [
+                    {
+                      "name": "estacao_ano",
+                      "expression": "`estacao_ano`"
+                    },
+                    {
+                      "name": "measure(amplitude_termica_media_c)",
+                      "expression": "MEASURE(`amplitude_termica_media_c`)"
+                    },
+                    {
+                      "name": "measure(temperatura_maxima_abs_c)",
+                      "expression": "MEASURE(`temperatura_maxima_abs_c`)"
+                    },
+                    {
+                      "name": "measure(temperatura_minima_abs_c)",
+                      "expression": "MEASURE(`temperatura_minima_abs_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Amplitude Térmica e Extremos Climáticos por Estação (2020–2026)"
+              },
+              "version": 3,
+              "mark": {
+                "colors": [
+                  "#8E44AD",
+                  "#C0392B",
+                  "#2980B9"
+                ],
+                "layout": "group"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "estacao_ano",
+                  "axis": {
+                    "title": "Estação do Ano",
+                    "labelAngle": 0
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fields": [
+                    {
+                      "fieldName": "measure(amplitude_termica_media_c)",
+                      "displayName": "Amplitude Térmica Média (°C)"
+                    },
+                    {
+                      "fieldName": "measure(temperatura_maxima_abs_c)",
+                      "displayName": "Temperatura Máxima Absoluta (°C)"
+                    },
+                    {
+                      "fieldName": "measure(temperatura_minima_abs_c)",
+                      "displayName": "Temperatura Mínima Absoluta (°C)"
+                    }
+                  ],
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 1
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "title": "Valor"
+                  }
+                },
+                "color": {
+                  "legend": {
+                    "position": "top"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 34,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "comparativo_anual_2026_historico",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_clima_mensal",
+                  "fields": [
+                    {
+                      "name": "measure(temperatura_media_c)",
+                      "expression": "MEASURE(`temperatura_media_c`)"
+                    },
+                    {
+                      "name": "ano",
+                      "expression": "`ano`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`ano` >= 2020"
+                    },
+                    {
+                      "expression": "`ano` <= 2026"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Temperatura Média por Ano — Brasília (2020–2026)"
+              },
+              "version": 3,
+              "mark": {
+                "colors": [
+                  "#E59866"
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "ano",
+                  "axis": {
+                    "title": "Ano",
+                    "labelAngle": 0
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(temperatura_media_c)",
+                  "axis": {
+                    "title": "Temperatura Média (°C)"
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 1
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative",
+                    "domain": {
+                      "min": 15,
+                      "max": 25
+                    }
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "measure(temperatura_media_c)",
+                    "format": {
+                      "type": "number-plain",
+                      "abbreviation": "none",
+                      "decimalPlaces": {
+                        "type": "exact",
+                        "places": 1
+                      }
+                    },
+                    "formatTemplate": "{{ @formatted }}°C"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 27,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "filtro_estacao_ano",
+            "queries": [
+              {
+                "name": "dashboards/01f1a63ffea912a0991530c04278d3aa/datasets/01f1a6424e0e10eead92057569543a7a_estacao_ano",
+                "query": {
+                  "datasetName": "atmos_clima_mensal",
+                  "fields": [
+                    {
+                      "name": "estacao_ano",
+                      "expression": "`estacao_ano`"
+                    },
+                    {
+                      "name": "estacao_ano_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Filtro — Estação do Ano"
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "estacao_ano",
+                    "queryName": "dashboards/01f1a63ffea912a0991530c04278d3aa/datasets/01f1a6424e0e10eead92057569543a7a_estacao_ano"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "precipitacao_total_por_ano_brasilia",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "atmos_clima_mensal",
+                  "fields": [
+                    {
+                      "name": "measure(precipitacao_total_mm)",
+                      "expression": "MEASURE(`precipitacao_total_mm`)"
+                    },
+                    {
+                      "name": "ano",
+                      "expression": "`ano`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`ano` >= 2020"
+                    },
+                    {
+                      "expression": "`ano` <= 2026"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Precipitação Total por Ano — Brasília (2020–2026)"
+              },
+              "version": 3,
+              "mark": {
+                "colors": [
+                  "#1A5276"
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "ano",
+                  "axis": {
+                    "title": "Ano",
+                    "labelAngle": 0
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(precipitacao_total_mm)",
+                  "axis": {
+                    "title": "Precipitação Total (mm)"
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 0
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "measure(precipitacao_total_mm)",
+                    "format": {
+                      "type": "number-plain",
+                      "abbreviation": "none",
+                      "decimalPlaces": {
+                        "type": "exact",
+                        "places": 0
+                      }
+                    },
+                    "formatTemplate": "{{ @formatted }} mm"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 34,
+            "width": 6,
+            "height": 7
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
